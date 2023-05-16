@@ -1,9 +1,28 @@
-import React from "react";
-import { FaTrashRestore, FaEdit } from "react-icons/fa";
+import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import EventCard from "./EventCard/EventCard";
 
 const EventList = () => {
   const allEventData = useLoaderData();
+  const [events, setEvents] = useState(allEventData);
+
+  const handleDelete = (id, imageName) => {
+    fetch(`http://localhost:5000/events/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Custom-Header": `${imageName}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount === 1) {
+          const remaining = events.filter((event) => event._id !== id);
+          setEvents(remaining);
+          alert("Successfully deleted one document.");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <>
       <h2 className="text-xl font-medium mb-8">Event list</h2>
@@ -18,38 +37,13 @@ const EventList = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <div className="flex items-center space-x-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img
-                        src={
-                          `http://localhost:5000/uploads/${allEventData[0]?.banner}` ||
-                          ""
-                        }
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                  </div>
-                </div>
-              </td>
-              <td>Zemlak, Daniel and Leannon</td>
-              <td>Purple</td>
-              <td>
-                <div className="flex gap-2">
-                  <button className="bg-green-400 text-white p-2 rounded-md">
-                    <FaEdit className="h-4 w-4"></FaEdit>
-                  </button>
-                  <button className="bg-red-400 text-white p-2 rounded-md">
-                    <FaTrashRestore className="h-4 w-4"></FaTrashRestore>
-                  </button>
-                </div>
-              </td>
-            </tr>
+            {events.map((event) => (
+              <EventCard
+                key={event._id}
+                event={event}
+                handleDelete={handleDelete}
+              ></EventCard>
+            ))}
           </tbody>
         </table>
       </div>

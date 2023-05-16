@@ -4,6 +4,7 @@ import VolunteerList from "../components/VolunteerList/VolunteerList";
 import AddEvent from "../components/AddEvent/AddEvent";
 import EventList from "../components/EventList/EventList";
 import Main from "../layout/Main/Main";
+import UpdateEvent from "../components/UpdateEvent/UpdateEvent";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,12 @@ const router = createBrowserRouter([
       {
         path: "/admin-dashboard/add-event",
         element: <AddEvent></AddEvent>,
+      },
+      {
+        path: "/admin-dashboard/update-event/:id",
+        element: <UpdateEvent></UpdateEvent>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/events/${params.id}`),
       },
     ],
   },

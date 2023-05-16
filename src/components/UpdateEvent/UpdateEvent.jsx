@@ -1,18 +1,23 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
-const AddEvent = () => {
+const UpdateEvent = () => {
+  const singleEvent = useLoaderData();
+  const { _id, banner, event_title, event_date, description } = singleEvent;
+
   const [bannerImage, setBannerImage] = useState(null);
   const handleFileChange = (e) => {
     setBannerImage(e.target.files[0]);
   };
 
-  const handleSubmit = async (event) => {
+  const handleUpdate = async (event) => {
     event.preventDefault();
     const form = event.target;
     const eventTitle = form.eventTitle.value;
     const eventDate = form.eventDate.value;
     const description = form.description.value;
+    const imageName = banner;
 
     try {
       const formData = new FormData();
@@ -21,15 +26,19 @@ const AddEvent = () => {
       formData.append("description", description);
       formData.append("bannerImage", bannerImage);
 
-      const response = await axios.post(
-        "http://localhost:5000/events",
-        formData
+      const response = await axios.put(
+        `http://localhost:5000/events/${_id}`,
+        formData,
+        {
+          headers: {
+            "Custom-Header": `${imageName}`,
+          },
+        }
       );
       const { data } = response;
 
-      if (data.insertedId) {
-        form.reset();
-        alert("Event data submitted successfully");
+      if (data.modifiedCount === 1) {
+        alert("Successfully updated one document.");
       }
     } catch (error) {
       console.error("Error submitting event data", error);
@@ -37,8 +46,8 @@ const AddEvent = () => {
   };
   return (
     <>
-      <h2 className="text-xl font-medium mb-8">Add event</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 className="text-xl font-medium mb-8">Update event</h2>
+      <form onSubmit={handleUpdate}>
         <div className="bg-white grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 p-4 rounded-md">
           <div className="form-control">
             <label className="label">
@@ -48,6 +57,7 @@ const AddEvent = () => {
               name="eventTitle"
               type="text"
               required
+              defaultValue={event_title}
               placeholder="Event Title"
               className="input input-bordered"
             />
@@ -60,6 +70,7 @@ const AddEvent = () => {
               name="eventDate"
               type="date"
               required
+              defaultValue={event_date}
               placeholder="Event Date"
               className="input input-bordered"
             />
@@ -71,6 +82,7 @@ const AddEvent = () => {
             <textarea
               name="description"
               required
+              defaultValue={description}
               placeholder="Description"
               className="textarea textarea-bordered textarea-md w-full h-36"
             ></textarea>
@@ -80,11 +92,10 @@ const AddEvent = () => {
               <span className="label-text">Banner</span>
             </label>
             <input
-              onChange={handleFileChange}
               name="banner"
+              onChange={handleFileChange}
               type="file"
               accept="image/*"
-              required
               className="file-input w-full input-bordered"
             />
           </div>
@@ -97,4 +108,4 @@ const AddEvent = () => {
   );
 };
 
-export default AddEvent;
+export default UpdateEvent;
