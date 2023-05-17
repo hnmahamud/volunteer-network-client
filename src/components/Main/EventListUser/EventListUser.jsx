@@ -1,11 +1,29 @@
-import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import EventCardUser from "./EventCardUser";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../context/AuthProviders";
+import LoadingSpinner from "../../Shared/LoadingSpinner/LoadingSpinner";
 
 const EventListUser = () => {
-  const userEventsData = useLoaderData();
-  const [userEvents, setUserEvents] = useState(userEventsData);
+  const { user } = useContext(AuthContext);
+  const [userEvents, setUserEvents] = useState([]);
+
+  const userEmail = user?.email;
+  useEffect(() => {
+    fetch(`http://localhost:5000/users-events?email=${userEmail}`, {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem(
+          "volunteer-access-token"
+        )}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUserEvents(data);
+      })
+      .catch((error) => console.log(error));
+  }, [userEmail]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -37,15 +55,21 @@ const EventListUser = () => {
       }
     });
   };
+
+  if (!userEvents.length > 0) {
+    return <LoadingSpinner fullScreen={false}></LoadingSpinner>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-16">
-      {userEvents.map((event) => (
-        <EventCardUser
-          key={event._id}
-          event={event}
-          handleDelete={handleDelete}
-        ></EventCardUser>
-      ))}
+      {userEvents.length > 0 &&
+        userEvents.map((event) => (
+          <EventCardUser
+            key={event._id}
+            event={event}
+            handleDelete={handleDelete}
+          ></EventCardUser>
+        ))}
     </div>
   );
 };

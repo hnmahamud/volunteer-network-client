@@ -29,7 +29,7 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -56,7 +56,7 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -70,22 +70,22 @@ const Login = () => {
     <div className="flex justify-center items-center text-center mt-16">
       <div className="card w-96 bg-base-100 shadow-md border rounded-md">
         <div className="card-body">
-          <h2 className="card-title text-center mb-4">Login!</h2>
+          <h2 className="text-2xl font-bold text-center mb-4">Login!</h2>
           <button
             onClick={googleHandler}
-            className="w-full border rounded-full"
+            className="w-full border rounded-full hover:bg-gray-100"
           >
-            <div className="flex justify-center items-center space-x-4">
-              <FaGoogle></FaGoogle>
+            <div className="flex justify-center items-center space-x-4 p-2">
+              <FaGoogle className="h-6 w-6 text-blue-500"></FaGoogle>
               <span>Continue With Google</span>
             </div>
           </button>
           <button
             onClick={gitHubHandler}
-            className="w-full border rounded-full"
+            className="w-full border rounded-full hover:bg-gray-100"
           >
-            <div className="flex justify-center items-center space-x-4">
-              <FaGithub></FaGithub>
+            <div className="flex justify-center items-center space-x-4 p-2">
+              <FaGithub className="h-6 w-6"></FaGithub>
               <span>Continue With Github</span>
             </div>
           </button>

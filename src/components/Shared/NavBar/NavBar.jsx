@@ -11,6 +11,7 @@ const NavBar = () => {
   const logoutHandler = () => {
     logout()
       .then(() => {
+        localStorage.removeItem("volunteer-access-token");
         toast("Logout successful!", {
           position: "top-center",
           autoClose: 3000,

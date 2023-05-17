@@ -28,7 +28,7 @@ const router = createBrowserRouter([
             <EventListUser></EventListUser>
           </PrivateRoute>
         ),
-        loader: async () => fetch("http://localhost:5000/users-events"),
+        // loader: async () => fetch("http://localhost:5000/users-events"),
       },
       {
         path: "/login",

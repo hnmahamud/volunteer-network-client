@@ -45,25 +45,25 @@ const AuthProviders = ({ children }) => {
       setLoading(false);
       setFullLoading(false);
 
-      // if (currentUser && currentUser.email) {
-      //   const loggedUser = {
-      //     email: currentUser.email,
-      //   };
-      //   fetch("https://car-doctor-server-ten-sable.vercel.app/jwt", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(loggedUser),
-      //   })
-      //     .then((res) => res.json())
-      //     .then((data) => {
-      //       localStorage.setItem("car-doctor-access-token", data.token);
-      //     })
-      //     .catch((error) => console.log(error));
-      // } else {
-      //   localStorage.removeItem("car-doctor-access-token");
-      // }
+      if (currentUser && currentUser.email) {
+        const loggedUser = {
+          email: currentUser.email,
+        };
+        fetch("http://localhost:5000/jwt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loggedUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            localStorage.setItem("volunteer-access-token", data.token);
+          })
+          .catch((error) => console.log(error));
+      } else {
+        localStorage.removeItem("volunteer-access-token");
+      }
 
       return () => {
         return unsubscribe();
