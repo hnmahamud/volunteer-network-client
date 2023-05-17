@@ -2,7 +2,7 @@ import React from "react";
 import { FaTrashRestore, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const EventCard = ({ event, handleDelete }) => {
+const EventCardAdmin = ({ event, handleDelete }) => {
   const { _id, banner, event_title, event_date, description } = event;
 
   return (
@@ -44,4 +44,4 @@ const EventCard = ({ event, handleDelete }) => {
   );
 };
 
-export default EventCard;
+export default EventCardAdmin;

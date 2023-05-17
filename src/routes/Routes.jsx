@@ -1,15 +1,39 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../layout/Dashboard/Dashboard";
-import VolunteerList from "../components/VolunteerList/VolunteerList";
-import AddEvent from "../components/AddEvent/AddEvent";
-import EventList from "../components/EventList/EventList";
 import Main from "../layout/Main/Main";
-import UpdateEvent from "../components/UpdateEvent/UpdateEvent";
+import VolunteerList from "../components/Dashboard/VolunteerList/VolunteerList";
+import AddEvent from "../components/Dashboard/AddEvent/AddEvent";
+import UpdateEvent from "../components/Dashboard/UpdateEvent/UpdateEvent";
+import Home from "../components/Main/Home/Home";
+import Login from "../components/Main/Login/Login";
+import VolunteerRegistration from "../components/Main/VolunteerRegistration/VolunteerRegistration";
+import EventListAdmin from "../components/Dashboard/EventListAdmin/EventListAdmin";
+import EventListUser from "../components/Main/EventListUser/EventListUser";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
+    children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+        loader: async () => fetch("http://localhost:5000/events"),
+      },
+      {
+        path: "/user-events",
+        element: <EventListUser></EventListUser>,
+        loader: async () => fetch("http://localhost:5000/users-events"),
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/volunteer-registration",
+        element: <VolunteerRegistration></VolunteerRegistration>,
+      },
+    ],
   },
   {
     path: "/admin-dashboard",
@@ -18,10 +42,11 @@ const router = createBrowserRouter([
       {
         path: "/admin-dashboard",
         element: <VolunteerList></VolunteerList>,
+        loader: () => fetch("http://localhost:5000/volunteers"),
       },
       {
         path: "/admin-dashboard/event-list",
-        element: <EventList></EventList>,
+        element: <EventListAdmin></EventListAdmin>,
         loader: () => fetch("http://localhost:5000/events"),
       },
       {

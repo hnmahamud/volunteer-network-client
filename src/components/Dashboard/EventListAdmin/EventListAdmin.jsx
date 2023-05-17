@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import EventCard from "./EventCard/EventCard";
+import EventCardAdmin from "./EventCardAdmin";
 
-const EventList = () => {
+const EventListAdmin = () => {
   const allEventData = useLoaderData();
   const [events, setEvents] = useState(allEventData);
 
@@ -38,11 +38,11 @@ const EventList = () => {
           </thead>
           <tbody>
             {events.map((event) => (
-              <EventCard
+              <EventCardAdmin
                 key={event._id}
                 event={event}
                 handleDelete={handleDelete}
-              ></EventCard>
+              ></EventCardAdmin>
             ))}
           </tbody>
         </table>
@@ -51,4 +51,4 @@ const EventList = () => {
   );
 };
 
-export default EventList;
+export default EventListAdmin;

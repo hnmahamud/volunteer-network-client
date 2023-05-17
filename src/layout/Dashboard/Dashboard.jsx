@@ -9,7 +9,9 @@ const Dashboard = () => {
     <div className="w-[98%] md:w-[90%] mx-auto my-8">
       <div className="md:grid md:grid-cols-4 md:gap-16">
         <div className="md:col-span-1 flex flex-col space-y-4 md:space-y-8">
-          <img className="h-20" src={logo} alt="" />
+          <Link to="/">
+            <img className="h-20" src={logo} alt="" />
+          </Link>
           <Link
             to="/admin-dashboard"
             className={
