@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UpdateEvent = () => {
   const singleEvent = useLoaderData();
@@ -38,7 +39,12 @@ const UpdateEvent = () => {
       const { data } = response;
 
       if (data.modifiedCount === 1) {
-        alert("Successfully updated one document.");
+        Swal.fire({
+          title: "Success!",
+          text: "Event update successfully.",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
       }
     } catch (error) {
       console.error("Error submitting event data", error);

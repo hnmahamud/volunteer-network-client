@@ -1,26 +1,43 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import VolunteerCard from "./VolunteerCard";
+import Swal from "sweetalert2";
 
 const VolunteerList = () => {
   const volunteersData = useLoaderData();
   const [volunteers, setVolunteers] = useState(volunteersData);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/volunteers/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount === 1) {
-          const remaining = volunteers.filter(
-            (volunteer) => volunteer._id !== id
-          );
-          setVolunteers(remaining);
-          alert("Successfully deleted one document.");
-        }
-      })
-      .catch((error) => console.log(error));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/volunteers/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount === 1) {
+              const remaining = volunteers.filter(
+                (volunteer) => volunteer._id !== id
+              );
+              setVolunteers(remaining);
+              Swal.fire(
+                "Deleted!",
+                "Your volunteer has been deleted.",
+                "success"
+              );
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    });
   };
   return (
     <>

@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import logo from "../../../assets/logos/Group 1329.png";
 import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthProviders";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -10,7 +11,16 @@ const NavBar = () => {
   const logoutHandler = () => {
     logout()
       .then(() => {
-        console.log("Logout successful!");
+        toast("Logout successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -27,14 +37,12 @@ const NavBar = () => {
       >
         Events
       </NavLink>
-      {user && (
-        <NavLink
-          to="/volunteer-registration"
-          className={pathname === "/volunteer-registration" ? "font-bold" : ""}
-        >
-          Volunteer Registration
-        </NavLink>
-      )}
+      <NavLink
+        to="/volunteer-registration"
+        className={pathname === "/volunteer-registration" ? "font-bold" : ""}
+      >
+        Volunteer Registration
+      </NavLink>
       {user && <p className="text-blue-500 font-bold">{user.displayName}</p>}
     </>
   );

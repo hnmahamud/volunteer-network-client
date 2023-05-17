@@ -1,27 +1,40 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import EventCardAdmin from "./EventCardAdmin";
+import Swal from "sweetalert2";
 
 const EventListAdmin = () => {
   const allEventData = useLoaderData();
   const [events, setEvents] = useState(allEventData);
 
   const handleDelete = (id, imageName) => {
-    fetch(`http://localhost:5000/events/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Custom-Header": `${imageName}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.deletedCount === 1) {
-          const remaining = events.filter((event) => event._id !== id);
-          setEvents(remaining);
-          alert("Successfully deleted one document.");
-        }
-      })
-      .catch((error) => console.log(error));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/events/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Custom-Header": `${imageName}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.deletedCount === 1) {
+              const remaining = events.filter((event) => event._id !== id);
+              setEvents(remaining);
+              Swal.fire("Deleted!", "Your event has been deleted.", "success");
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    });
   };
   return (
     <>

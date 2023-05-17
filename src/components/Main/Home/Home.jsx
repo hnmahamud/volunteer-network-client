@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import EventCard from "./EventCard";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProviders";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -31,7 +32,16 @@ const Home = () => {
       });
       const data2 = await response2.json();
       if (data2.insertedId) {
-        alert("Event added successful!");
+        toast("Event added successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -40,7 +50,7 @@ const Home = () => {
   return (
     <div>
       <div className="flex flex-col justify-center items-center text-center my-12 space-y-2">
-        <h2 className="text-xl md:text-3xl font-bold uppercase">
+        <h2 className="text-xl md:text-2xl font-bold uppercase">
           I grow by helping people in need.
         </h2>
         <div className="form-control">

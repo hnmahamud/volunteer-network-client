@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../../context/AuthProviders";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const VolunteerRegistration = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,10 +34,29 @@ const VolunteerRegistration = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.insertedId) {
-          alert("Volunteer registration successful!");
+          toast("Volunteer registration successful!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate("/", { replace: true });
         }
         if (data.error) {
-          alert("Email already registered!");
+          toast.error("Email already registered!", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
       })
       .catch((error) => console.log(error));

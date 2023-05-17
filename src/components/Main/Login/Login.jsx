@@ -1,9 +1,16 @@
 import React, { useContext } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { AuthContext } from "../../../context/AuthProviders";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { googleLogin, gitHubLogin } = useContext(AuthContext);
+
+  // Use Location for redirect target page or home page
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state || "/";
 
   // Google login
   const googleHandler = () => {
@@ -12,6 +19,17 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         console.log(user);
+        toast("Login successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -28,6 +46,17 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         console.log(user);
+        toast("Login successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         // Handle Errors here.

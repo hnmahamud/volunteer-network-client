@@ -9,6 +9,7 @@ import Login from "../components/Main/Login/Login";
 import VolunteerRegistration from "../components/Main/VolunteerRegistration/VolunteerRegistration";
 import EventListAdmin from "../components/Dashboard/EventListAdmin/EventListAdmin";
 import EventListUser from "../components/Main/EventListUser/EventListUser";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/user-events",
-        element: <EventListUser></EventListUser>,
+        element: (
+          <PrivateRoute>
+            <EventListUser></EventListUser>
+          </PrivateRoute>
+        ),
         loader: async () => fetch("http://localhost:5000/users-events"),
       },
       {
@@ -31,7 +36,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/volunteer-registration",
-        element: <VolunteerRegistration></VolunteerRegistration>,
+        element: (
+          <PrivateRoute>
+            <VolunteerRegistration></VolunteerRegistration>
+          </PrivateRoute>
+        ),
       },
     ],
   },

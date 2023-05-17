@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 const AddEvent = () => {
   const [bannerImage, setBannerImage] = useState(null);
@@ -29,7 +30,12 @@ const AddEvent = () => {
 
       if (data.insertedId) {
         form.reset();
-        alert("Event data submitted successfully");
+        Swal.fire({
+          title: "Success!",
+          text: "Event added successfully.",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
       }
     } catch (error) {
       console.error("Error submitting event data", error);
